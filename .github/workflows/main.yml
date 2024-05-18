@@ -1,0 +1,27 @@
+name: pos_appdev_ci
+on: 
+  push:
+    branches: [main]
+
+jobs:
+  CI:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3.1.0
+
+      - name: Docker Login
+        uses: docker/login-action@v2.1.0
+        with:
+          username: §{{ secrets.DOCKERHUB_USER }}
+          password: §{{ secrets.DOCKERHUB_PASSWORD }}
+
+      - name: Build and push Docker imagens
+        uses: docker/build-push-action@v3.2.0
+        with:
+          context: .
+          file: .
+          push: true
+          tags:
+            robertosantosbr/pos_appdev_dockerhub_srv1:v1
+            robertosantosbr/pos_appdev_dockerhub_srv1:lattest
+       
